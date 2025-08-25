@@ -5,9 +5,9 @@ trigger: always_on
 # Definición técnica
 
 - Stack tecnologico
-    - Nest.js (front+back)
-    - Supabase (para el login y db postgres)
-    - tailwind + **Preline UI**
+  - Nest.js (front+back)
+  - Supabase (para el login y db postgres)
+  - tailwind + **Preline UI**
 
 - Font-family: Poppins
 - Colores
@@ -73,7 +73,6 @@ $gradient-radial: radial-gradient(#5aa9e6ff, #987d7cff, #020202ff, #50723cff, #a
 - Entidades
 
 A continuación, se definen las entidades principales, sus atributos y las relaciones entre ellas.
-
 
 ### Modelo de Entidades y Atributos
 
@@ -160,13 +159,13 @@ Permite a los usuarios calificar y dejar comentarios sobre los complejos que vis
 Para manejar servicios como "parrilla", "estacionamiento", etc., se necesita una relación de muchos a muchos entre `Complejo` y `Servicio`.
 
 - **Entidad: `Servicio`**
-    - **`id`** (PK, Entero, Autoincremental): ID del servicio.
-    - **`nombre`** (Texto, Único): Nombre del servicio ("Parrilla", "Estacionamiento", "Vestuarios").
-    - **`icono`** (Texto, Opcional): Referencia a un ícono para mostrar en la interfaz.
+  - **`id`** (PK, Entero, Autoincremental): ID del servicio.
+  - **`nombre`** (Texto, Único): Nombre del servicio ("Parrilla", "Estacionamiento", "Vestuarios").
+  - **`icono`** (Texto, Opcional): Referencia a un ícono para mostrar en la interfaz.
 - **Entidad: `Complejo_Servicio` (Tabla Pivote)**
-    - **`id_complejo`** (FK, Entero): Referencia al `Complejo`.
-    - **`id_servicio`** (FK, Entero): Referencia al `Servicio`.
-    - *(Clave primaria compuesta por ambos campos)*.
+  - **`id_complejo`** (FK, Entero): Referencia al `Complejo`.
+  - **`id_servicio`** (FK, Entero): Referencia al `Servicio`.
+  - _(Clave primaria compuesta por ambos campos)_.
 
 ---
 

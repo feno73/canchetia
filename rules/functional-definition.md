@@ -27,18 +27,18 @@ Para ser competitiva y funcional, la aplicación deberá contar con las siguient
 
 - **Buscador Principal:** Una barra de búsqueda prominente en la página de inicio para que los usuarios puedan buscar canchas por ubicación (ciudad, barrio).
 - **Filtros de Búsqueda:** Posibilidad de refinar los resultados por:
-    - Tipo de cancha (Fútbol 5, 7, 11)
-    - Tipo de superficie (césped sintético, natural)
-    - Disponibilidad (fecha y hora)
-    - Servicios adicionales (parrilla, vestuarios, estacionamiento)
+  - Tipo de cancha (Fútbol 5, 7, 11)
+  - Tipo de superficie (césped sintético, natural)
+  - Disponibilidad (fecha y hora)
+  - Servicios adicionales (parrilla, vestuarios, estacionamiento)
 - **Vista de Resultados en Mapa y Lista:** Los usuarios podrán visualizar los complejos deportivos en un mapa interactivo y en formato de lista con información clave.
 - **Página de Detalle del Complejo:** Cada complejo tendrá una página individual con:
-    - Fotos y/o videos de las instalaciones.
-    - Descripción detallada.
-    - Listado de canchas disponibles con sus características y precios.
-    - Calendario de disponibilidad en tiempo real.
-    - Ubicación en el mapa.
-    - Reseñas y calificaciones de otros usuarios.
+  - Fotos y/o videos de las instalaciones.
+  - Descripción detallada.
+  - Listado de canchas disponibles con sus características y precios.
+  - Calendario de disponibilidad en tiempo real.
+  - Ubicación en el mapa.
+  - Reseñas y calificaciones de otros usuarios.
 
 ### Módulo de Reservas y Pagos
 
@@ -63,23 +63,23 @@ A continuación, se propone una estructura de las principales vistas (pantallas)
 ### Vistas para el Usuario Jugador
 
 1. **Página de Inicio (Homepage):**
-    - **Componentes:** Barra de navegación principal, un titular atractivo, el buscador principal por ubicación, y una selección de complejos destacados o promocionados.
+   - **Componentes:** Barra de navegación principal, un titular atractivo, el buscador principal por ubicación, y una selección de complejos destacados o promocionados.
 2. **Página de Resultados de Búsqueda:**
-    - **Componentes:** A la izquierda o en la parte superior, los filtros de búsqueda. En el área principal, la lista de complejos con una foto, nombre, ubicación, precio promedio y calificación. Opción para alternar a una vista de mapa.
+   - **Componentes:** A la izquierda o en la parte superior, los filtros de búsqueda. En el área principal, la lista de complejos con una foto, nombre, ubicación, precio promedio y calificación. Opción para alternar a una vista de mapa.
 3. **Página de Detalle del Complejo:**
-    - **Componentes:** Galería de imágenes, información de contacto, descripción, servicios, mapa de ubicación, sección de canchas disponibles con su calendario de horarios y precios, y la sección de reseñas de usuarios.
+   - **Componentes:** Galería de imágenes, información de contacto, descripción, servicios, mapa de ubicación, sección de canchas disponibles con su calendario de horarios y precios, y la sección de reseñas de usuarios.
 4. **Página de Proceso de Reserva (Checkout):**
-    - **Componentes:** Resumen de la reserva (cancha, fecha, hora, precio), formulario para los datos del jugador, selección del método de pago y el botón para confirmar la reserva.
+   - **Componentes:** Resumen de la reserva (cancha, fecha, hora, precio), formulario para los datos del jugador, selección del método de pago y el botón para confirmar la reserva.
 5. **Perfil de Usuario:**
-    - **Pestañas/Secciones:** "Mis Reservas" (con el historial y las próximas), "Mis Datos" (para editar la información personal), y "Configuración" (para notificaciones).
+   - **Pestañas/Secciones:** "Mis Reservas" (con el historial y las próximas), "Mis Datos" (para editar la información personal), y "Configuración" (para notificaciones).
 
 ### Vistas para el Administrador del Complejo
 
 1. **Panel de Control (Dashboard):**
-    - **Componentes:** Gráficos y tarjetas con métricas importantes (reservas de hoy, ingresos semanales, canchas más reservadas). Accesos directos a las funciones más utilizadas.
+   - **Componentes:** Gráficos y tarjetas con métricas importantes (reservas de hoy, ingresos semanales, canchas más reservadas). Accesos directos a las funciones más utilizadas.
 2. **Vista de Calendario de Reservas:**
-    - **Componentes:** Un calendario que muestre todas las canchas y sus horarios ocupados y libres. Deberá permitir ver por día, semana y mes. Opción para hacer clic en un horario libre y crear una reserva manual.
+   - **Componentes:** Un calendario que muestre todas las canchas y sus horarios ocupados y libres. Deberá permitir ver por día, semana y mes. Opción para hacer clic en un horario libre y crear una reserva manual.
 3. **Sección de Gestión de Canchas:**
-    - **Componentes:** Una tabla o lista de las canchas del complejo. Cada elemento de la lista tendrá opciones para editar (precios, horarios, fotos) o eliminar. Un botón visible para "Agregar nueva cancha".
+   - **Componentes:** Una tabla o lista de las canchas del complejo. Cada elemento de la lista tendrá opciones para editar (precios, horarios, fotos) o eliminar. Un botón visible para "Agregar nueva cancha".
 4. **Sección de Configuración del Complejo:**
-    - **Componentes:** Formularios para editar la información general del complejo (nombre, dirección, servicios), configurar las políticas de cancelación y gestionar los métodos de pago.
+   - **Componentes:** Formularios para editar la información general del complejo (nombre, dirección, servicios), configurar las políticas de cancelación y gestionar los métodos de pago.

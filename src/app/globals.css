@@ -1,0 +1,63 @@
+@import 'tailwindcss';
+
+:root {
+  /* Brand colors from technical definition */
+  --argentinian-blue: #5aa9e6;
+  --cinereous: #987d7c;
+  --black: #020202;
+  --fern-green: #50723c;
+  --light-green: #a1e887;
+
+  /* Theme colors */
+  --background: #ffffff;
+  --foreground: var(--black);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-poppins);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family:
+    var(--font-poppins),
+    system-ui,
+    -apple-system,
+    sans-serif;
+}
+
+/* Utility classes for brand colors */
+.text-argentinian-blue {
+  color: var(--argentinian-blue);
+}
+
+.bg-argentinian-blue {
+  background-color: var(--argentinian-blue);
+}
+
+.text-cinereous {
+  color: var(--cinereous);
+}
+
+.bg-cinereous {
+  background-color: var(--cinereous);
+}
+
+.text-fern-green {
+  color: var(--fern-green);
+}
+
+.bg-fern-green {
+  background-color: var(--fern-green);
+}
+
+.text-light-green {
+  color: var(--light-green);
+}
+
+.bg-light-green {
+  background-color: var(--light-green);
+}
