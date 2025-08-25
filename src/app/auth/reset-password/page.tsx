@@ -3,7 +3,10 @@
 import { useState, useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { createSupabaseClient } from '@/lib/supabase/client';
-import { Lock, Eye, EyeOff, CheckCircle } from 'lucide-react';
+import { Lock, Eye, EyeOff, CheckCircle, AlertTriangle } from 'lucide-react';
+import { validatePassword, validatePasswordConfirmation } from '@/lib/utils/validation';
+import { Button, Input } from '@/components/ui';
+import Link from 'next/link';
 
 export default function ResetPasswordPage() {
   const [password, setPassword] = useState('');
@@ -13,34 +16,49 @@ export default function ResetPasswordPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState(false);
+  const [validSession, setValidSession] = useState<boolean | null>(null);
   const router = useRouter();
   const searchParams = useSearchParams();
   const supabase = createSupabaseClient();
 
   useEffect(() => {
-    // Verificar si tenemos los tokens necesarios
-    const accessToken = searchParams.get('access_token');
-    const refreshToken = searchParams.get('refresh_token');
-    
-    if (!accessToken || !refreshToken) {
-      setError('Enlace inválido o expirado. Por favor, solicita un nuevo enlace de restablecimiento.');
-    }
-  }, [searchParams]);
+    // Check if we have a valid reset session
+    const checkSession = async () => {
+      try {
+        const { data: { session }, error } = await supabase.auth.getSession();
+        
+        if (error || !session) {
+          setValidSession(false);
+          return;
+        }
+        
+        setValidSession(true);
+      } catch (err) {
+        console.error('Session check error:', err);
+        setValidSession(false);
+      }
+    };
+
+    checkSession();
+  }, [supabase]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     setError('');
 
-    // Validaciones
-    if (password.length < 8) {
-      setError('La contraseña debe tener al menos 8 caracteres');
+    // Validate password
+    const passwordValidation = validatePassword(password);
+    if (!passwordValidation.isValid) {
+      setError(passwordValidation.error || 'Contraseña inválida');
       setLoading(false);
       return;
     }
 
-    if (password !== confirmPassword) {
-      setError('Las contraseñas no coinciden');
+    // Validate password confirmation
+    const confirmValidation = validatePasswordConfirmation(password, confirmPassword);
+    if (!confirmValidation.isValid) {
+      setError(confirmValidation.error || 'Las contraseñas no coinciden');
       setLoading(false);
       return;
     }
@@ -66,6 +84,61 @@ export default function ResetPasswordPage() {
       setLoading(false);
     }
   };
+
+  // Loading state while checking session
+  if (validSession === null) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-primary-50 to-secondary-50 flex items-center justify-center p-4">
+        <div className="flex items-center justify-center space-x-2">
+          <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-primary-600"></div>
+          <span className="text-gray-600">Verificando sesión...</span>
+        </div>
+      </div>
+    );
+  }
+
+  // Invalid session - show error
+  if (!validSession) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-primary-50 to-secondary-50 flex items-center justify-center p-4">
+        <div className="max-w-md w-full bg-white rounded-lg shadow-lg p-8 space-y-6">
+          <div className="text-center">
+            <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+              <AlertTriangle className="w-8 h-8 text-red-600" />
+            </div>
+            <h2 className="text-2xl font-semibold text-gray-900 mb-2">Enlace inválido o expirado</h2>
+            <p className="text-gray-600 mb-6">
+              El enlace para restablecer tu contraseña ha expirado o no es válido.
+            </p>
+          </div>
+
+          <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+            <h3 className="text-sm font-medium text-yellow-800 mb-2">¿Qué puedes hacer?</h3>
+            <ul className="text-sm text-yellow-700 space-y-1">
+              <li>• Solicita un nuevo enlace de restablecimiento</li>
+              <li>• Verifica que copiaste el enlace completo del correo</li>
+              <li>• Los enlaces expiran después de 24 horas</li>
+            </ul>
+          </div>
+
+          <div className="flex flex-col sm:flex-row gap-3 justify-center">
+            <Link
+              href="/forgot-password"
+              className="bg-primary-600 text-white px-6 py-3 rounded-lg hover:bg-primary-700 transition-colors font-semibold text-center"
+            >
+              Solicitar nuevo enlace
+            </Link>
+            <Link
+              href="/login"
+              className="text-primary-600 hover:text-primary-700 font-semibold px-6 py-3 rounded-lg border border-primary-300 hover:border-primary-400 transition-colors text-center"
+            >
+              Volver al login
+            </Link>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   if (success) {
     return (

@@ -7,6 +7,8 @@ import { registerUser } from '@/lib/auth/register';
 import { Eye, EyeOff, Mail, Lock, User, Phone, UserCheck } from 'lucide-react';
 import { UserRole } from '@/types';
 import SocialAuth from '@/components/auth/SocialAuth';
+import { validateRegisterForm } from '@/lib/utils/validation';
+import { Button, Input } from '@/components/ui';
 
 export default function RegisterPage() {
   const [formData, setFormData] = useState({
@@ -34,15 +36,18 @@ export default function RegisterPage() {
     setLoading(true);
     setError('');
 
-    // Validation
-    if (formData.password !== formData.confirmPassword) {
-      setError('Las contraseñas no coinciden');
-      setLoading(false);
-      return;
-    }
+    // Client-side validation
+    const validation = validateRegisterForm({
+      nombre: formData.nombre,
+      apellido: formData.apellido,
+      email: formData.email,
+      password: formData.password,
+      confirmPassword: formData.confirmPassword,
+      telefono: formData.telefono,
+    });
 
-    if (formData.password.length < 8) {
-      setError('La contraseña debe tener al menos 8 caracteres');
+    if (!validation.isValid) {
+      setError(validation.error || 'Datos inválidos');
       setLoading(false);
       return;
     }
@@ -58,7 +63,7 @@ export default function RegisterPage() {
       });
 
       if (!result.success) {
-        setError(result.error);
+        setError(result.error || 'Error desconocido');
         console.error('Registration failed:', {
           step: result.step,
           error: result.error,
@@ -108,6 +113,7 @@ export default function RegisterPage() {
                 required
                 className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none transition-colors"
                 placeholder="Juan"
+                autoComplete="given-name"
               />
             </div>
           </div>
@@ -127,6 +133,7 @@ export default function RegisterPage() {
                 required
                 className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none transition-colors"
                 placeholder="Pérez"
+                autoComplete="family-name"
               />
             </div>
           </div>
@@ -147,6 +154,7 @@ export default function RegisterPage() {
               required
               className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none transition-colors"
               placeholder="tu@email.com"
+              autoComplete="email"
             />
           </div>
         </div>
@@ -165,6 +173,7 @@ export default function RegisterPage() {
               onChange={handleChange}
               className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none transition-colors"
               placeholder="+54 11 1234-5678"
+              autoComplete="tel"
             />
           </div>
         </div>
@@ -204,6 +213,7 @@ export default function RegisterPage() {
                 required
                 className="w-full pl-10 pr-12 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none transition-colors"
                 placeholder="••••••••"
+                autoComplete="new-password"
               />
               <button
                 type="button"
@@ -230,6 +240,7 @@ export default function RegisterPage() {
                 required
                 className="w-full pl-10 pr-12 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none transition-colors"
                 placeholder="••••••••"
+                autoComplete="new-password"
               />
               <button
                 type="button"

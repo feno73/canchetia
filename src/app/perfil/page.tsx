@@ -3,8 +3,10 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '@/lib/hooks/useAuth';
 import { useRouter } from 'next/navigation';
-import { User, Mail, Phone, Calendar, Edit2, Save, X, Eye, EyeOff } from 'lucide-react';
+import { Calendar, Edit2, Save, X, Eye, EyeOff } from 'lucide-react';
 import { createSupabaseClient } from '@/lib/supabase/client';
+import { validateName, validatePhone, validatePassword, validatePasswordConfirmation } from '@/lib/utils/validation';
+import { Button, Input, Card, CardContent, CardHeader, CardTitle, Badge } from '@/components/ui';
 
 export default function PerfilPage() {
   const { user, loading, updateProfile } = useAuth();
@@ -51,6 +53,30 @@ export default function PerfilPage() {
     setError('');
     setSuccess('');
 
+    // Validate form data
+    const nameValidation = validateName(profileData.nombre, 'nombre');
+    if (!nameValidation.isValid) {
+      setError(nameValidation.error || 'Nombre inválido');
+      setSaving(false);
+      return;
+    }
+
+    const lastNameValidation = validateName(profileData.apellido, 'apellido');
+    if (!lastNameValidation.isValid) {
+      setError(lastNameValidation.error || 'Apellido inválido');
+      setSaving(false);
+      return;
+    }
+
+    if (profileData.telefono) {
+      const phoneValidation = validatePhone(profileData.telefono);
+      if (!phoneValidation.isValid) {
+        setError(phoneValidation.error || 'Teléfono inválido');
+        setSaving(false);
+        return;
+      }
+    }
+
     try {
       const result = await updateProfile(profileData);
       
@@ -75,14 +101,25 @@ export default function PerfilPage() {
     setError('');
     setSuccess('');
 
-    if (passwordData.newPassword !== passwordData.confirmPassword) {
-      setError('Las nuevas contraseñas no coinciden');
+    // Validate current password
+    if (!passwordData.currentPassword.trim()) {
+      setError('La contraseña actual es requerida');
       setSaving(false);
       return;
     }
 
-    if (passwordData.newPassword.length < 8) {
-      setError('La nueva contraseña debe tener al menos 8 caracteres');
+    // Validate new password
+    const passwordValidation = validatePassword(passwordData.newPassword);
+    if (!passwordValidation.isValid) {
+      setError(passwordValidation.error || 'Nueva contraseña inválida');
+      setSaving(false);
+      return;
+    }
+
+    // Validate password confirmation
+    const confirmValidation = validatePasswordConfirmation(passwordData.newPassword, passwordData.confirmPassword);
+    if (!confirmValidation.isValid) {
+      setError(confirmValidation.error || 'Las contraseñas no coinciden');
       setSaving(false);
       return;
     }

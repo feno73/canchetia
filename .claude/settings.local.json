@@ -1,5 +1,14 @@
 {
   "permissions": {
-    "additionalDirectories": ["E:\\REPOS\\temp_backup"]
+    "allow": [
+      "mcp__playwright__browser_click",
+      "mcp__playwright__browser_type",
+      "mcp__playwright__browser_wait_for",
+      "mcp__playwright__browser_navigate",
+      "mcp__playwright__browser_evaluate"
+    ],
+    "additionalDirectories": [
+      "E:\\REPOS\\temp_backup"
+    ]
   }
 }

@@ -5,6 +5,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { createSupabaseClient } from '@/lib/supabase/client';
 import Link from 'next/link';
 import { Mail, CheckCircle, AlertCircle, RefreshCw } from 'lucide-react';
+import { Button } from '@/components/ui';
 
 export default function VerifyEmailPage() {
   const [loading, setLoading] = useState(false);
@@ -132,23 +133,14 @@ export default function VerifyEmailPage() {
         </ul>
         
         {email && (
-          <button
+          <Button
             onClick={handleResendEmail}
-            disabled={resendLoading}
-            className="inline-flex items-center px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-sm font-medium"
+            loading={resendLoading}
+            leftIcon={<Mail className="w-4 h-4" />}
+            size="sm"
           >
-            {resendLoading ? (
-              <>
-                <RefreshCw className="w-4 h-4 mr-2 animate-spin" />
-                Reenviando...
-              </>
-            ) : (
-              <>
-                <Mail className="w-4 h-4 mr-2" />
-                Reenviar correo
-              </>
-            )}
-          </button>
+            Reenviar correo
+          </Button>
         )}
       </div>
 

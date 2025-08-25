@@ -2,11 +2,13 @@
 
 import { useEffect, useState } from 'react';
 import { createSupabaseClient } from '@/lib/supabase/client';
+import { getDashboardMetrics, getRecentReservations } from '@/lib/dashboard/metrics';
 import { DashboardStats } from '@/types';
-import { Calendar, DollarSign, TrendingUp, MapPin } from 'lucide-react';
+import { Calendar, DollarSign, TrendingUp, MapPin, Clock, Users } from 'lucide-react';
 
 export default function DashboardPage() {
   const [stats, setStats] = useState<DashboardStats | null>(null);
+  const [recentReservations, setRecentReservations] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const supabase = createSupabaseClient();
@@ -18,47 +20,22 @@ export default function DashboardPage() {
           data: { user },
         } = await supabase.auth.getUser();
 
-        if (!user) return;
+        if (!user) {
+          setError('Usuario no autenticado');
+          return;
+        }
 
-        // For now, we'll show placeholder stats
-        // In a real implementation, this would fetch from the dashboard_stats view
-        setStats({
-          reservas_hoy: 5,
-          ingresos_semana: 45000,
-          ocupacion_porcentaje: 68,
-          canchas_mas_reservadas: [
-            {
-              cancha: {
-                id: '1',
-                id_complejo: '1',
-                nombre: 'Cancha 1 - Fútbol 5',
-                tipo_futbol: 5,
-                tipo_superficie: 'sintético',
-                es_techada: true,
-                precio_hora: 8000,
-                fotos: [],
-                created_at: '',
-                updated_at: '',
-              },
-              reservas_count: 12,
-            },
-            {
-              cancha: {
-                id: '2',
-                id_complejo: '1',
-                nombre: 'Cancha 2 - Fútbol 7',
-                tipo_futbol: 7,
-                tipo_superficie: 'sintético',
-                es_techada: false,
-                precio_hora: 12000,
-                fotos: [],
-                created_at: '',
-                updated_at: '',
-              },
-              reservas_count: 8,
-            },
-          ],
-        });
+        // Fetch real dashboard metrics
+        const metrics = await getDashboardMetrics(user.id);
+        const reservations = await getRecentReservations(user.id, 5);
+        
+        if (metrics) {
+          setStats(metrics);
+        } else {
+          setError('No se pudieron cargar las estadísticas');
+        }
+        
+        setRecentReservations(reservations);
       } catch (err) {
         setError('Error al cargar estadísticas');
         console.error('Stats error:', err);
@@ -173,6 +150,69 @@ export default function DashboardPage() {
               <p className="text-gray-600">No hay datos de reservas aún</p>
               <p className="text-sm text-gray-500">
                 Crea tu primer complejo para empezar a recibir reservas
+              </p>
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* Recent Reservations */}
+      <div className="bg-white rounded-lg shadow">
+        <div className="px-6 py-4 border-b border-gray-200">
+          <h2 className="text-lg font-semibold text-gray-900">Reservas Recientes</h2>
+        </div>
+        <div className="p-6">
+          {recentReservations?.length ? (
+            <div className="space-y-4">
+              {recentReservations.map((reservation) => {
+                const startDate = new Date(reservation.fecha_hora_inicio);
+                const endDate = new Date(reservation.fecha_hora_fin);
+                
+                return (
+                  <div key={reservation.id} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                    <div className="flex items-center space-x-4">
+                      <div className="p-2 bg-primary-100 rounded-lg">
+                        <Calendar className="h-5 w-5 text-primary-600" />
+                      </div>
+                      <div>
+                        <p className="font-medium text-gray-900">
+                          {reservation.usuarios?.nombre} {reservation.usuarios?.apellido}
+                        </p>
+                        <p className="text-sm text-gray-600">
+                          {reservation.canchas?.nombre} - {reservation.canchas?.complejos?.nombre}
+                        </p>
+                        <div className="flex items-center space-x-4 mt-1">
+                          <div className="flex items-center text-xs text-gray-500">
+                            <Clock className="h-3 w-3 mr-1" />
+                            {startDate.toLocaleDateString('es-AR')} {startDate.toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit' })} - {endDate.toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit' })}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="text-right">
+                      <p className="text-lg font-semibold text-gray-900">
+                        ${reservation.precio_total?.toLocaleString('es-AR')}
+                      </p>
+                      <p className={`text-sm px-2 py-1 rounded-full text-center ${
+                        reservation.estado === 'confirmada' 
+                          ? 'bg-green-100 text-green-800'
+                          : reservation.estado === 'pendiente'
+                          ? 'bg-yellow-100 text-yellow-800'
+                          : 'bg-red-100 text-red-800'
+                      }`}>
+                        {reservation.estado}
+                      </p>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          ) : (
+            <div className="text-center py-8">
+              <Clock className="h-12 w-12 text-gray-400 mx-auto mb-4" />
+              <p className="text-gray-600">No hay reservas recientes</p>
+              <p className="text-sm text-gray-500">
+                Las reservas aparecerán aquí una vez que los usuarios empiecen a reservar
               </p>
             </div>
           )}

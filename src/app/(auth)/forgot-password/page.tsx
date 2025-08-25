@@ -4,6 +4,8 @@ import { useState } from 'react';
 import { createSupabaseClient } from '@/lib/supabase/client';
 import Link from 'next/link';
 import { Mail, ArrowLeft, CheckCircle } from 'lucide-react';
+import { validateEmail } from '@/lib/utils/validation';
+import { Button, Input } from '@/components/ui';
 
 export default function ForgotPasswordPage() {
   const [email, setEmail] = useState('');
@@ -17,8 +19,10 @@ export default function ForgotPasswordPage() {
     setLoading(true);
     setError('');
 
-    if (!email) {
-      setError('Por favor ingresa tu correo electrónico');
+    // Validate email
+    const validation = validateEmail(email);
+    if (!validation.isValid) {
+      setError(validation.error || 'Correo inválido');
       setLoading(false);
       return;
     }
@@ -100,31 +104,25 @@ export default function ForgotPasswordPage() {
         </div>
       )}
 
-      <div>
-        <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
-          Correo electrónico
-        </label>
-        <div className="relative">
-          <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
-          <input
-            id="email"
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-            className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none transition-colors"
-            placeholder="tu@email.com"
-          />
-        </div>
-      </div>
+      <Input
+        id="email"
+        type="email"
+        label="Correo electrónico"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+        leftIcon={<Mail className="w-5 h-5" />}
+        placeholder="tu@email.com"
+        required
+      />
 
-      <button
+      <Button
         type="submit"
-        disabled={loading}
-        className="w-full bg-primary-600 text-white py-3 rounded-lg font-semibold hover:bg-primary-700 focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+        loading={loading}
+        fullWidth
+        size="lg"
       >
-        {loading ? 'Enviando...' : 'Enviar enlace de restablecimiento'}
-      </button>
+        Enviar enlace de restablecimiento
+      </Button>
 
       <div className="text-center">
         <Link
