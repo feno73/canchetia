@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { Calendar, Clock, MapPin, CreditCard, ArrowRight, ArrowLeft } from 'lucide-react';
+import { MapPin, CreditCard, ArrowRight, ArrowLeft } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle, Button } from '@/components/ui';
 
 export default function ReservarPage() {

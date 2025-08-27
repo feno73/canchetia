@@ -36,9 +36,9 @@ export default function NuevoComplejoPage() {
       }
 
       // Geocode the address (simplified - in production use proper geocoding API)
-      const geocodeData = await geocodeAddress(`${formData.direccion}, ${formData.ciudad}`);
+      const geocodeData = await geocodeAddress();
       
-      const { data, error: insertError } = await supabase
+      const { error: insertError } = await supabase
         .from('complejos')
         .insert([
           {
@@ -67,7 +67,7 @@ export default function NuevoComplejoPage() {
   };
 
   // Simplified geocoding - in production, use Google Maps API or similar
-  const geocodeAddress = async (address: string) => {
+  const geocodeAddress = async () => {
     // Mock geocoding for now
     return {
       lat: -34.6118, // Buenos Aires default

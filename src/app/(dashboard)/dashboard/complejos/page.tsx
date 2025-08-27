@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { createSupabaseClient } from '@/lib/supabase/client';
 import { useAuth } from '@/lib/hooks/useAuth';
 import { Complex } from '@/types';
@@ -14,11 +14,7 @@ export default function ComplejosPage() {
   const [error, setError] = useState('');
   const supabase = createSupabaseClient();
 
-  useEffect(() => {
-    fetchComplejos();
-  }, []);
-
-  const fetchComplejos = async () => {
+  const fetchComplejos = useCallback(async () => {
     try {
       if (!user) return;
       
@@ -45,7 +41,11 @@ export default function ComplejosPage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [user, supabase]);
+
+  useEffect(() => {
+    fetchComplejos();
+  }, [fetchComplejos]);
 
   const deleteComplejo = async (id: string) => {
     if (!confirm('¿Estás seguro de que quieres eliminar este complejo?')) {

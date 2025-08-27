@@ -1,10 +1,9 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { createSupabaseClient } from '@/lib/supabase/client';
 import { useAuth } from '@/lib/hooks/useAuth';
-import { Complex } from '@/types';
 import { ArrowLeft, MapPin, DollarSign, Camera, Upload, X } from 'lucide-react';
 import Link from 'next/link';
 
@@ -14,7 +13,7 @@ export default function NuevaCanchaPage() {
   const { user } = useAuth();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  const [complejos, setComplejos] = useState<Complex[]>([]);
+  const [complejos, setComplejos] = useState<{id: string, nombre: string}[]>([]);
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
   const [previewUrls, setPreviewUrls] = useState<string[]>([]);
   const supabase = createSupabaseClient();
@@ -30,11 +29,7 @@ export default function NuevaCanchaPage() {
     precio_hora: '',
   });
 
-  useEffect(() => {
-    fetchComplejos();
-  }, []);
-
-  const fetchComplejos = async () => {
+  const fetchComplejos = useCallback(async () => {
     try {
       if (!user) return;
       
@@ -53,7 +48,11 @@ export default function NuevaCanchaPage() {
     } catch (err) {
       console.error('Error:', err);
     }
-  };
+  }, [user, supabase]);
+
+  useEffect(() => {
+    fetchComplejos();
+  }, [fetchComplejos]);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(e.target.files || []);
@@ -120,7 +119,7 @@ export default function NuevaCanchaPage() {
       // Upload images first
       const uploadedImageUrls = await uploadImages();
 
-      const { data, error: insertError } = await supabase
+      const { error: insertError } = await supabase
         .from('canchas')
         .insert([
           {

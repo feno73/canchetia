@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { createSupabaseClient } from '@/lib/supabase/client';
 import { useAuth } from '@/lib/hooks/useAuth';
 import { Field } from '@/types';
@@ -14,11 +14,7 @@ export default function CanchasPage() {
   const [error, setError] = useState('');
   const supabase = createSupabaseClient();
 
-  useEffect(() => {
-    fetchCanchas();
-  }, []);
-
-  const fetchCanchas = async () => {
+  const fetchCanchas = useCallback(async () => {
     try {
       if (!user) return;
       
@@ -48,7 +44,11 @@ export default function CanchasPage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [user, supabase]);
+
+  useEffect(() => {
+    fetchCanchas();
+  }, [fetchCanchas]);
 
   const deleteCancha = async (id: string) => {
     if (!confirm('¿Estás seguro de que quieres eliminar esta cancha?')) {

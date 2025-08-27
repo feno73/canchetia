@@ -6,7 +6,6 @@ import { useRouter } from 'next/navigation';
 import { Calendar, Edit2, Save, X, Eye, EyeOff } from 'lucide-react';
 import { createSupabaseClient } from '@/lib/supabase/client';
 import { validateName, validatePhone, validatePassword, validatePasswordConfirmation } from '@/lib/utils/validation';
-import { Button, Input, Card, CardContent, CardHeader, CardTitle, Badge } from '@/components/ui';
 
 export default function PerfilPage() {
   const { user, loading, updateProfile } = useAuth();

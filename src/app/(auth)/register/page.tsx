@@ -8,7 +8,6 @@ import { Eye, EyeOff, Mail, Lock, User, Phone, UserCheck } from 'lucide-react';
 import { UserRole } from '@/types';
 import SocialAuth from '@/components/auth/SocialAuth';
 import { validateRegisterForm } from '@/lib/utils/validation';
-import { Button, Input } from '@/components/ui';
 
 export default function RegisterPage() {
   const [formData, setFormData] = useState({

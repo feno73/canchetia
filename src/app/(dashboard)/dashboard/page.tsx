@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { createSupabaseClient } from '@/lib/supabase/client';
 import { getDashboardMetrics, getRecentReservations } from '@/lib/dashboard/metrics';
 import { DashboardStats } from '@/types';
-import { Calendar, DollarSign, TrendingUp, MapPin, Clock, Users } from 'lucide-react';
+import { Calendar, DollarSign, TrendingUp, MapPin, Clock } from 'lucide-react';
 
 export default function DashboardPage() {
   const [stats, setStats] = useState<DashboardStats | null>(null);

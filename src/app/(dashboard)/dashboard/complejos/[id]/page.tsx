@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useParams } from 'next/navigation';
 import { createSupabaseClient } from '@/lib/supabase/client';
 import { Complex } from '@/types';
@@ -14,11 +14,7 @@ export default function ComplejoDetailPage() {
   const [error, setError] = useState('');
   const supabase = createSupabaseClient();
 
-  useEffect(() => {
-    fetchComplejo();
-  }, [params.id]);
-
-  const fetchComplejo = async () => {
+  const fetchComplejo = useCallback(async () => {
     try {
       const { data, error } = await supabase
         .from('complejos')
@@ -49,7 +45,11 @@ export default function ComplejoDetailPage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [params.id, supabase]);
+
+  useEffect(() => {
+    fetchComplejo();
+  }, [fetchComplejo, params.id]);
 
   const calculateAverageRating = (resenas: any[]) => {
     if (!resenas || resenas.length === 0) return 0;

@@ -1,10 +1,10 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useParams } from 'next/navigation';
 import { createSupabaseClient } from '@/lib/supabase/client';
 import { Field } from '@/types';
-import { ArrowLeft, Clock, DollarSign, Calendar, Save } from 'lucide-react';
+import { ArrowLeft, Clock, DollarSign, Save } from 'lucide-react';
 import Link from 'next/link';
 
 type PriceRule = {
@@ -38,12 +38,7 @@ export default function CanchaConfiguracionPage() {
     { value: 0, label: 'Domingo' },
   ];
 
-  useEffect(() => {
-    fetchCancha();
-    fetchPriceRules();
-  }, [params.id]);
-
-  const fetchCancha = async () => {
+  const fetchCancha = useCallback(async () => {
     try {
       const { data, error } = await supabase
         .from('canchas')
@@ -68,9 +63,9 @@ export default function CanchaConfiguracionPage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [params.id, supabase]);
 
-  const fetchPriceRules = async () => {
+  const fetchPriceRules = useCallback(async () => {
     try {
       const { data, error } = await supabase
         .from('price_rules')
@@ -88,7 +83,12 @@ export default function CanchaConfiguracionPage() {
     } catch (err) {
       console.error('Error:', err);
     }
-  };
+  }, [params.id, supabase]);
+
+  useEffect(() => {
+    fetchCancha();
+    fetchPriceRules();
+  }, [fetchCancha, fetchPriceRules, params.id]);
 
   const addPriceRule = () => {
     const newRule: PriceRule = {

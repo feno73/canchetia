@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Search, MapPin, Filter, Star } from 'lucide-react';
+import { Search, MapPin, Filter } from 'lucide-react';
 import Link from 'next/link';
 
 export default function BuscarPage() {

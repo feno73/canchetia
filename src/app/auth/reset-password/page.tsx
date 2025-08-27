@@ -1,11 +1,10 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { createSupabaseClient } from '@/lib/supabase/client';
 import { Lock, Eye, EyeOff, CheckCircle, AlertTriangle } from 'lucide-react';
 import { validatePassword, validatePasswordConfirmation } from '@/lib/utils/validation';
-import { Button, Input } from '@/components/ui';
 import Link from 'next/link';
 
 export default function ResetPasswordPage() {
@@ -18,7 +17,6 @@ export default function ResetPasswordPage() {
   const [success, setSuccess] = useState(false);
   const [validSession, setValidSession] = useState<boolean | null>(null);
   const router = useRouter();
-  const searchParams = useSearchParams();
   const supabase = createSupabaseClient();
 
   useEffect(() => {

@@ -1,14 +1,15 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+export const dynamic = 'force-dynamic';
+
+import { useState, useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { createSupabaseClient } from '@/lib/supabase/client';
 import Link from 'next/link';
-import { Mail, CheckCircle, AlertCircle, RefreshCw } from 'lucide-react';
+import { Mail, CheckCircle, AlertCircle } from 'lucide-react';
 import { Button } from '@/components/ui';
 
-export default function VerifyEmailPage() {
-  const [loading, setLoading] = useState(false);
+function VerifyEmailContent() {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState(false);
   const [resendLoading, setResendLoading] = useState(false);
@@ -164,5 +165,13 @@ export default function VerifyEmailPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function VerifyEmailPage() {
+  return (
+    <Suspense fallback={<div>Cargando...</div>}>
+      <VerifyEmailContent />
+    </Suspense>
   );
 }

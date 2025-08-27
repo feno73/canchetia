@@ -1,9 +1,8 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { createSupabaseClient } from '@/lib/supabase/client';
-import { Complex } from '@/types';
 import { ArrowLeft, MapPin, Clock, Phone, FileText } from 'lucide-react';
 import Link from 'next/link';
 
@@ -25,11 +24,7 @@ export default function EditarComplejoPage() {
     horario_cierre: '',
   });
 
-  useEffect(() => {
-    fetchComplejo();
-  }, [params.id]);
-
-  const fetchComplejo = async () => {
+  const fetchComplejo = useCallback(async () => {
     try {
       const { data, error } = await supabase
         .from('complejos')
@@ -58,7 +53,11 @@ export default function EditarComplejoPage() {
     } finally {
       setFetchLoading(false);
     }
-  };
+  }, [params.id, supabase]);
+
+  useEffect(() => {
+    fetchComplejo();
+  }, [fetchComplejo, params.id]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -67,7 +66,7 @@ export default function EditarComplejoPage() {
 
     try {
       // If address changed, geocode the new address
-      let updateData = { ...formData };
+      const updateData = { ...formData };
       
       const { error: updateError } = await supabase
         .from('complejos')

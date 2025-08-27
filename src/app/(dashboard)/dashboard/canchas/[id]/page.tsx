@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useParams } from 'next/navigation';
 import { createSupabaseClient } from '@/lib/supabase/client';
 import { Field } from '@/types';
@@ -15,11 +15,7 @@ export default function CanchaDetailPage() {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const supabase = createSupabaseClient();
 
-  useEffect(() => {
-    fetchCancha();
-  }, [params.id]);
-
-  const fetchCancha = async () => {
+  const fetchCancha = useCallback(async () => {
     try {
       const { data, error } = await supabase
         .from('canchas')
@@ -58,7 +54,11 @@ export default function CanchaDetailPage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [params.id, supabase]);
+
+  useEffect(() => {
+    fetchCancha();
+  }, [fetchCancha, params.id]);
 
   const formatFieldType = (tipo: number) => {
     return `Fútbol ${tipo}`;
