@@ -1,11 +1,31 @@
 'use client';
 
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { useAuth } from '@/lib/hooks/useAuth';
 import Link from 'next/link';
-import { Search, MapPin, Calendar, Star, ArrowRight } from 'lucide-react';
+import { Search, MapPin, Calendar, Star, ArrowRight, ChevronDown, LogOut, User } from 'lucide-react';
 
 export default function HomePage() {
-  const { user, loading } = useAuth();
+  const { user, loading, signOut } = useAuth();
+  const router = useRouter();
+  const [userMenuOpen, setUserMenuOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+
+  const handleLogout = async () => {
+    await signOut();
+    setUserMenuOpen(false);
+  };
+
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    const query = searchQuery.trim();
+    if (query) {
+      router.push(`/buscar?q=${encodeURIComponent(query)}`);
+    } else {
+      router.push('/buscar');
+    }
+  };
 
   if (loading) {
     return (
@@ -27,12 +47,50 @@ export default function HomePage() {
             <nav className="flex items-center space-x-4">
               {user ? (
                 <>
-                  <Link
-                    href="/perfil"
-                    className="text-gray-700 hover:text-argentinian-blue px-3 py-2 rounded-md transition-colors"
-                  >
-                    ¡Hola, {user.nombre}!
-                  </Link>
+                  {/* User Menu Dropdown */}
+                  <div className="relative">
+                    <button
+                      onClick={() => setUserMenuOpen(!userMenuOpen)}
+                      className="flex items-center text-gray-700 hover:text-argentinian-blue px-3 py-2 rounded-md transition-colors"
+                    >
+                      <User className="h-5 w-5 mr-2" />
+                      ¡Hola, {user.nombre}!
+                      <ChevronDown className="h-4 w-4 ml-1" />
+                    </button>
+                    
+                    {/* Dropdown Menu */}
+                    {userMenuOpen && (
+                      <>
+                        {/* Backdrop */}
+                        <div 
+                          className="fixed inset-0 z-10" 
+                          onClick={() => setUserMenuOpen(false)}
+                        />
+                        {/* Menu */}
+                        <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 z-20">
+                          <div className="py-1">
+                            <Link
+                              href="/perfil"
+                              className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                              onClick={() => setUserMenuOpen(false)}
+                            >
+                              <User className="h-4 w-4 mr-3" />
+                              Mi Perfil
+                            </Link>
+                            <hr className="border-gray-200 my-1" />
+                            <button
+                              onClick={handleLogout}
+                              className="flex items-center w-full px-4 py-2 text-sm text-red-600 hover:bg-red-50"
+                            >
+                              <LogOut className="h-4 w-4 mr-3" />
+                              Cerrar Sesión
+                            </button>
+                          </div>
+                        </div>
+                      </>
+                    )}
+                  </div>
+                  
                   {user.rol === 'admin_complejo' ? (
                     <Link
                       href="/dashboard"
@@ -105,23 +163,25 @@ export default function HomePage() {
             <div className="max-w-md mx-auto">
               <div className="bg-white rounded-lg shadow-lg p-6">
                 <h3 className="text-lg font-semibold mb-4">Buscar Canchas</h3>
-                <div className="space-y-4">
+                <form onSubmit={handleSearch} className="space-y-4">
                   <div className="relative">
-                    <MapPin className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
+                    <Search className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
                     <input
                       type="text"
-                      placeholder="¿Dónde querés jugar?"
+                      placeholder="Nombre del complejo..."
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
                       className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-argentinian-blue focus:border-transparent"
                     />
                   </div>
-                  <Link
-                    href="/buscar"
+                  <button
+                    type="submit"
                     className="w-full bg-argentinian-blue text-white py-3 rounded-lg hover:bg-primary-700 transition-colors font-semibold flex items-center justify-center"
                   >
                     <Search className="mr-2 h-5 w-5" />
                     Buscar Canchas
-                  </Link>
-                </div>
+                  </button>
+                </form>
               </div>
             </div>
           )}

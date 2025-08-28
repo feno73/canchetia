@@ -3,12 +3,12 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '@/lib/hooks/useAuth';
 import { useRouter } from 'next/navigation';
-import { Calendar, Edit2, Save, X, Eye, EyeOff } from 'lucide-react';
+import { Calendar, Edit2, Save, X, Eye, EyeOff, LogOut } from 'lucide-react';
 import { createSupabaseClient } from '@/lib/supabase/client';
 import { validateName, validatePhone, validatePassword, validatePasswordConfirmation } from '@/lib/utils/validation';
 
 export default function PerfilPage() {
-  const { user, loading, updateProfile } = useAuth();
+  const { user, loading, updateProfile, signOut } = useAuth();
   const [editing, setEditing] = useState(false);
   const [saving, setSaving] = useState(false);
   const [changingPassword, setChangingPassword] = useState(false);
@@ -161,6 +161,10 @@ export default function PerfilPage() {
     }
   };
 
+  const handleLogout = async () => {
+    await signOut();
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
@@ -169,8 +173,13 @@ export default function PerfilPage() {
     );
   }
 
+  useEffect(() => {
+    if (!loading && !user) {
+      router.push('/login');
+    }
+  }, [user, loading, router]);
+
   if (!user) {
-    router.push('/login');
     return null;
   }
 
@@ -465,6 +474,18 @@ export default function PerfilPage() {
                   </div>
                 </form>
               )}
+            </div>
+
+            {/* Logout Button */}
+            <div className="bg-white shadow rounded-lg p-6">
+              <h3 className="text-lg font-semibold text-gray-900 mb-4">Sesión</h3>
+              <button
+                onClick={handleLogout}
+                className="w-full flex items-center justify-center px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 focus:ring-2 focus:ring-red-500 focus:ring-offset-2 transition-colors"
+              >
+                <LogOut className="w-4 h-4 mr-2" />
+                Cerrar Sesión
+              </button>
             </div>
           </div>
         </div>
