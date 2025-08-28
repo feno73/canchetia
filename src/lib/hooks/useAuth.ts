@@ -28,17 +28,18 @@ export function useAuth() {
     const getSession = async () => {
       try {
         const {
-          data: { session },
-        } = await supabase.auth.getSession();
+          data: { user: authUser },
+          error: authError
+        } = await supabase.auth.getUser();
 
         if (!mounted) return;
 
-        if (!session?.user) {
+        if (authError || !authUser) {
           setState({
             user: null,
             authUser: null,
             loading: false,
-            error: null,
+            error: authError?.message || null,
           });
           return;
         }
@@ -47,7 +48,7 @@ export function useAuth() {
         const { data: userData, error } = await supabase
           .from('usuarios')
           .select('*')
-          .eq('id', session.user.id)
+          .eq('id', authUser.id)
           .single();
 
         if (!mounted) return;
@@ -55,7 +56,7 @@ export function useAuth() {
         if (error) {
           setState({
             user: null,
-            authUser: session.user,
+            authUser: authUser,
             loading: false,
             error: error.message,
           });
@@ -64,7 +65,7 @@ export function useAuth() {
 
         setState({
           user: userData,
-          authUser: session.user,
+          authUser: authUser,
           loading: false,
           error: null,
         });
@@ -85,10 +86,10 @@ export function useAuth() {
     // Listen for auth changes
     const {
       data: { subscription },
-    } = supabase.auth.onAuthStateChange(async (event, session) => {
+    } = supabase.auth.onAuthStateChange(async (event) => {
       if (!mounted) return;
 
-      if (event === 'SIGNED_OUT' || !session?.user) {
+      if (event === 'SIGNED_OUT') {
         setState({
           user: null,
           authUser: null,
@@ -99,21 +100,8 @@ export function useAuth() {
       }
 
       if (event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED') {
-        // Get user profile
-        const { data: userData, error } = await supabase
-          .from('usuarios')
-          .select('*')
-          .eq('id', session.user.id)
-          .single();
-
-        if (!mounted) return;
-
-        setState({
-          user: userData || null,
-          authUser: session.user,
-          loading: false,
-          error: error?.message || null,
-        });
+        // Re-fetch user data using getUser()
+        getSession();
       }
     });
 

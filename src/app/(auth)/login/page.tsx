@@ -65,7 +65,12 @@ export default function LoginPage() {
         } else {
           console.log('User role found:', userData.rol);
           const redirectPath = userData.rol === 'admin_complejo' ? '/dashboard' : '/';
-          router.push(redirectPath);
+          
+          // Force a session refresh to ensure cookies are set properly for middleware
+          await supabase.auth.getSession();
+          
+          // Use window.location for hard navigation to trigger middleware properly
+          window.location.href = redirectPath;
         }
       }
     } catch (err) {

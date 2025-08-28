@@ -6,6 +6,7 @@ import { createSupabaseClient } from '@/lib/supabase/client';
 import { Field } from '@/types';
 import { ArrowLeft, Clock, DollarSign, Save } from 'lucide-react';
 import Link from 'next/link';
+import { Button } from '@/components/ui';
 
 type PriceRule = {
   id?: string;
@@ -204,14 +205,14 @@ export default function CanchaConfiguracionPage() {
           <ArrowLeft className="h-4 w-4 mr-2" />
           Volver a {cancha?.nombre}
         </Link>
-        <button
+        <Button
           onClick={savePriceConfiguration}
-          disabled={saving}
-          className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 disabled:opacity-50"
+          loading={saving}
+          variant="primary"
+          leftIcon={<Save className="h-4 w-4" />}
         >
-          <Save className="h-4 w-4 mr-2" />
-          {saving ? 'Guardando...' : 'Guardar Configuración'}
-        </button>
+          Guardar Configuración
+        </Button>
       </div>
 
       <div>
@@ -262,12 +263,13 @@ export default function CanchaConfiguracionPage() {
       <div className="bg-white rounded-lg shadow p-6">
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-lg font-semibold text-gray-900">Precios Especiales</h2>
-          <button
+          <Button
             onClick={addPriceRule}
-            className="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-primary-600 hover:bg-primary-700"
+            variant="primary"
+            size="sm"
           >
             Agregar Regla
-          </button>
+          </Button>
         </div>
 
         {priceRules.length === 0 ? (

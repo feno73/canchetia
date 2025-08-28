@@ -147,3 +147,4 @@ The system uses PostgreSQL via Supabase with key relationships:
 - Reviews connect users to complexes they've visited
 
 When implementing, ensure proper foreign key constraints and indexes for performance on date/location-based queries.
+

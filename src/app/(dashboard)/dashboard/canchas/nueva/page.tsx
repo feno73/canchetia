@@ -6,6 +6,7 @@ import { createSupabaseClient } from '@/lib/supabase/client';
 import { useAuth } from '@/lib/hooks/useAuth';
 import { ArrowLeft, MapPin, DollarSign, Camera, Upload, X } from 'lucide-react';
 import Link from 'next/link';
+import { Button } from '@/components/ui';
 
 export default function NuevaCanchaPage() {
   const router = useRouter();
@@ -321,7 +322,7 @@ export default function NuevaCanchaPage() {
                 <div className="mb-4">
                   <label
                     htmlFor="images"
-                    className="cursor-pointer inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary-600 hover:bg-primary-700"
+                    className="cursor-pointer inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-argentinian-blue hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-argentinian-blue transition-colors"
                   >
                     <Upload className="h-4 w-4 mr-2" />
                     Subir Fotos
@@ -371,13 +372,13 @@ export default function NuevaCanchaPage() {
             >
               Cancelar
             </Link>
-            <button
+            <Button
               type="submit"
-              disabled={loading}
-              className="px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 disabled:opacity-50 disabled:cursor-not-allowed"
+              loading={loading}
+              variant="primary"
             >
-              {loading ? 'Creando...' : 'Crear Cancha'}
-            </button>
+              Crear Cancha
+            </Button>
           </div>
         </form>
       </div>

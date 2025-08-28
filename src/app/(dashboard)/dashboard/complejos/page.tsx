@@ -6,6 +6,7 @@ import { useAuth } from '@/lib/hooks/useAuth';
 import { Complex } from '@/types';
 import { Plus, MapPin, Clock, Phone, Edit, Trash2, Eye } from 'lucide-react';
 import Link from 'next/link';
+import { Button, LinkButton } from '@/components/ui';
 
 export default function ComplejosPage() {
   const { user } = useAuth();
@@ -101,13 +102,13 @@ export default function ComplejosPage() {
           <h1 className="text-2xl font-bold text-gray-900">Mis Complejos</h1>
           <p className="text-gray-600">Gestiona tus complejos deportivos</p>
         </div>
-        <Link
+        <LinkButton
           href="/dashboard/complejos/nuevo"
-          className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
+          variant="primary"
+          leftIcon={<Plus className="h-4 w-4" />}
         >
-          <Plus className="h-4 w-4 mr-2" />
           Nuevo Complejo
-        </Link>
+        </LinkButton>
       </div>
 
       {error && (
@@ -125,13 +126,13 @@ export default function ComplejosPage() {
           <p className="text-gray-600 mb-6">
             Crea tu primer complejo deportivo para empezar a recibir reservas
           </p>
-          <Link
+          <LinkButton
             href="/dashboard/complejos/nuevo"
-            className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary-600 hover:bg-primary-700"
+            variant="primary"
+            leftIcon={<Plus className="h-4 w-4" />}
           >
-            <Plus className="h-4 w-4 mr-2" />
             Crear Primer Complejo
-          </Link>
+          </LinkButton>
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

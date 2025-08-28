@@ -6,6 +6,7 @@ import { useAuth } from '@/lib/hooks/useAuth';
 import { Field } from '@/types';
 import { Plus, MapPin, Camera, Edit, Trash2, Eye, DollarSign } from 'lucide-react';
 import Link from 'next/link';
+import { LinkButton } from '@/components/ui';
 
 export default function CanchasPage() {
   const { user } = useAuth();
@@ -111,13 +112,13 @@ export default function CanchasPage() {
           <h1 className="text-2xl font-bold text-gray-900">Mis Canchas</h1>
           <p className="text-gray-600">Gestiona las canchas de tus complejos</p>
         </div>
-        <Link
+        <LinkButton
           href="/dashboard/canchas/nueva"
-          className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
+          variant="primary"
+          leftIcon={<Plus className="h-4 w-4" />}
         >
-          <Plus className="h-4 w-4 mr-2" />
           Nueva Cancha
-        </Link>
+        </LinkButton>
       </div>
 
       {error && (
@@ -135,13 +136,13 @@ export default function CanchasPage() {
           <p className="text-gray-600 mb-6">
             Crea tu primera cancha para empezar a recibir reservas
           </p>
-          <Link
+          <LinkButton
             href="/dashboard/canchas/nueva"
-            className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary-600 hover:bg-primary-700"
+            variant="primary"
+            leftIcon={<Plus className="h-4 w-4" />}
           >
-            <Plus className="h-4 w-4 mr-2" />
             Crear Primera Cancha
-          </Link>
+          </LinkButton>
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

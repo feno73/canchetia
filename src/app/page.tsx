@@ -9,41 +9,41 @@ export default function HomePage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-primary-50 to-secondary-50 flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600"></div>
+      <div className="min-h-screen bg-gradient-to-br from-argentinian-blue/5 to-cinereous/5 flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-argentinian-blue"></div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-primary-50 to-secondary-50">
+    <div className="min-h-screen bg-gradient-to-br from-argentinian-blue/5 to-cinereous/5">
       {/* Header */}
       <header className="bg-white shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center">
-              <h1 className="text-2xl font-bold text-primary-600">Canchetia</h1>
+              <h1 className="text-2xl font-bold text-argentinian-blue">Canchetia</h1>
             </div>
             <nav className="flex items-center space-x-4">
               {user ? (
                 <>
                   <Link
                     href="/perfil"
-                    className="text-gray-700 hover:text-primary-600 px-3 py-2 rounded-md transition-colors"
+                    className="text-gray-700 hover:text-argentinian-blue px-3 py-2 rounded-md transition-colors"
                   >
                     ¡Hola, {user.nombre}!
                   </Link>
                   {user.rol === 'admin_complejo' ? (
                     <Link
                       href="/dashboard"
-                      className="bg-primary-600 text-white px-4 py-2 rounded-lg hover:bg-primary-700 transition-colors"
+                      className="bg-argentinian-blue text-white px-4 py-2 rounded-lg hover:bg-primary-700 transition-colors"
                     >
                       Dashboard
                     </Link>
                   ) : (
                     <Link
                       href="/buscar"
-                      className="bg-primary-600 text-white px-4 py-2 rounded-lg hover:bg-primary-700 transition-colors"
+                      className="bg-argentinian-blue text-white px-4 py-2 rounded-lg hover:bg-primary-700 transition-colors"
                     >
                       Buscar Canchas
                     </Link>
@@ -53,13 +53,13 @@ export default function HomePage() {
                 <>
                   <Link
                     href="/login"
-                    className="text-gray-700 hover:text-primary-600 px-3 py-2 rounded-md transition-colors"
+                    className="text-gray-700 hover:text-argentinian-blue px-3 py-2 rounded-md transition-colors"
                   >
                     Iniciar Sesión
                   </Link>
                   <Link
                     href="/register"
-                    className="bg-primary-600 text-white px-4 py-2 rounded-lg hover:bg-primary-700 transition-colors"
+                    className="bg-argentinian-blue text-white px-4 py-2 rounded-lg hover:bg-primary-700 transition-colors"
                   >
                     Registrarse
                   </Link>
@@ -75,7 +75,7 @@ export default function HomePage() {
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-6xl font-bold text-gray-900 mb-6">
             Reservá tu cancha de{' '}
-            <span className="text-primary-600">fútbol</span>
+            <span className="text-argentinian-blue">fútbol</span>
           </h2>
           <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
             La plataforma más fácil para encontrar y reservar canchas de fútbol en tu ciudad. 
@@ -86,14 +86,14 @@ export default function HomePage() {
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link
                 href="/register?rol=jugador"
-                className="bg-primary-600 text-white px-8 py-3 rounded-lg hover:bg-primary-700 transition-colors font-semibold flex items-center justify-center"
+                className="bg-argentinian-blue text-white px-8 py-3 rounded-lg hover:bg-primary-700 transition-colors font-semibold flex items-center justify-center"
               >
                 Soy Jugador
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Link>
               <Link
                 href="/register?rol=admin_complejo"
-                className="bg-secondary-600 text-white px-8 py-3 rounded-lg hover:bg-secondary-700 transition-colors font-semibold flex items-center justify-center"
+                className="bg-cinereous text-white px-8 py-3 rounded-lg hover:bg-secondary-700 transition-colors font-semibold flex items-center justify-center"
               >
                 Tengo un Complejo
                 <ArrowRight className="ml-2 h-5 w-5" />
@@ -111,12 +111,12 @@ export default function HomePage() {
                     <input
                       type="text"
                       placeholder="¿Dónde querés jugar?"
-                      className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                      className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-argentinian-blue focus:border-transparent"
                     />
                   </div>
                   <Link
                     href="/buscar"
-                    className="w-full bg-primary-600 text-white py-3 rounded-lg hover:bg-primary-700 transition-colors font-semibold flex items-center justify-center"
+                    className="w-full bg-argentinian-blue text-white py-3 rounded-lg hover:bg-primary-700 transition-colors font-semibold flex items-center justify-center"
                   >
                     <Search className="mr-2 h-5 w-5" />
                     Buscar Canchas
@@ -130,8 +130,8 @@ export default function HomePage() {
         {/* Features */}
         <div className="grid md:grid-cols-3 gap-8 mb-16">
           <div className="bg-white rounded-xl p-8 shadow-lg">
-            <div className="w-12 h-12 bg-primary-100 rounded-lg flex items-center justify-center mb-4">
-              <Search className="h-6 w-6 text-primary-600" />
+            <div className="w-12 h-12 bg-argentinian-blue/10 rounded-lg flex items-center justify-center mb-4">
+              <Search className="h-6 w-6 text-argentinian-blue" />
             </div>
             <h3 className="text-xl font-semibold mb-3">Búsqueda Fácil</h3>
             <p className="text-gray-600">
@@ -140,8 +140,8 @@ export default function HomePage() {
           </div>
 
           <div className="bg-white rounded-xl p-8 shadow-lg">
-            <div className="w-12 h-12 bg-success-100 rounded-lg flex items-center justify-center mb-4">
-              <Calendar className="h-6 w-6 text-success-600" />
+            <div className="w-12 h-12 bg-light-green/20 rounded-lg flex items-center justify-center mb-4">
+              <Calendar className="h-6 w-6 text-fern-green" />
             </div>
             <h3 className="text-xl font-semibold mb-3">Reserva Instantánea</h3>
             <p className="text-gray-600">
@@ -150,8 +150,8 @@ export default function HomePage() {
           </div>
 
           <div className="bg-white rounded-xl p-8 shadow-lg">
-            <div className="w-12 h-12 bg-accent-100 rounded-lg flex items-center justify-center mb-4">
-              <Star className="h-6 w-6 text-accent-600" />
+            <div className="w-12 h-12 bg-fern-green/20 rounded-lg flex items-center justify-center mb-4">
+              <Star className="h-6 w-6 text-fern-green" />
             </div>
             <h3 className="text-xl font-semibold mb-3">Mejores Complejos</h3>
             <p className="text-gray-600">
@@ -170,7 +170,7 @@ export default function HomePage() {
             </p>
             <Link
               href="/register?rol=admin_complejo"
-              className="bg-secondary-600 text-white px-8 py-3 rounded-lg hover:bg-secondary-700 transition-colors font-semibold inline-flex items-center"
+              className="bg-cinereous text-white px-8 py-3 rounded-lg hover:bg-secondary-700 transition-colors font-semibold inline-flex items-center"
             >
               Registrar mi Complejo
               <ArrowRight className="ml-2 h-5 w-5" />

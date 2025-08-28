@@ -6,6 +6,7 @@ import { createSupabaseClient } from '@/lib/supabase/client';
 import { Field } from '@/types';
 import { ArrowLeft, MapPin, DollarSign, Camera, Edit, Calendar, Clock } from 'lucide-react';
 import Link from 'next/link';
+import { LinkButton } from '@/components/ui';
 
 export default function CanchaDetailPage() {
   const params = useParams();
@@ -139,13 +140,13 @@ export default function CanchaDetailPage() {
           <ArrowLeft className="h-4 w-4 mr-2" />
           Volver a Canchas
         </Link>
-        <Link
+        <LinkButton
           href={`/dashboard/canchas/${cancha.id}/editar`}
-          className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary-600 hover:bg-primary-700"
+          variant="primary"
+          leftIcon={<Edit className="h-4 w-4" />}
         >
-          <Edit className="h-4 w-4 mr-2" />
           Editar
-        </Link>
+        </LinkButton>
       </div>
 
       {/* Header */}

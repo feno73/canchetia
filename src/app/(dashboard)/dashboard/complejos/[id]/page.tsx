@@ -6,6 +6,7 @@ import { createSupabaseClient } from '@/lib/supabase/client';
 import { Complex } from '@/types';
 import { ArrowLeft, MapPin, Clock, Phone, FileText, Edit, Plus, Star } from 'lucide-react';
 import Link from 'next/link';
+import { LinkButton } from '@/components/ui';
 
 export default function ComplejoDetailPage() {
   const params = useParams();
@@ -112,13 +113,13 @@ export default function ComplejoDetailPage() {
           <ArrowLeft className="h-4 w-4 mr-2" />
           Volver a Complejos
         </Link>
-        <Link
+        <LinkButton
           href={`/dashboard/complejos/${complejo.id}/editar`}
-          className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary-600 hover:bg-primary-700"
+          variant="primary"
+          leftIcon={<Edit className="h-4 w-4" />}
         >
-          <Edit className="h-4 w-4 mr-2" />
           Editar
-        </Link>
+        </LinkButton>
       </div>
 
       {/* Header */}
@@ -173,13 +174,14 @@ export default function ComplejoDetailPage() {
       <div className="bg-white rounded-lg shadow">
         <div className="px-6 py-4 border-b border-gray-200 flex items-center justify-between">
           <h2 className="text-lg font-semibold text-gray-900">Canchas</h2>
-          <Link
+          <LinkButton
             href={`/dashboard/canchas/nueva?complejo=${complejo.id}`}
-            className="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-primary-600 hover:bg-primary-700"
+            variant="primary"
+            size="sm"
+            leftIcon={<Plus className="h-4 w-4" />}
           >
-            <Plus className="h-4 w-4 mr-2" />
             Nueva Cancha
-          </Link>
+          </LinkButton>
         </div>
         
         <div className="p-6">
@@ -219,13 +221,13 @@ export default function ComplejoDetailPage() {
               <p className="text-gray-600 mb-4">
                 Agrega canchas a tu complejo para empezar a recibir reservas
               </p>
-              <Link
+              <LinkButton
                 href={`/dashboard/canchas/nueva?complejo=${complejo.id}`}
-                className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary-600 hover:bg-primary-700"
+                variant="primary"
+                leftIcon={<Plus className="h-4 w-4" />}
               >
-                <Plus className="h-4 w-4 mr-2" />
                 Agregar Primera Cancha
-              </Link>
+              </LinkButton>
             </div>
           )}
         </div>
